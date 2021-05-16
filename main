@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Sub 2 Project</title>
+	<link rel="stylesheet" type="text/css" href="main.css">
+
+</head>
+<body style="background-color:black;">
+
+	<font color="white">
+	<h1 align="center">Bienvenido :)</h1>
+	</font>
+	<hr>
+
+	<canvas id="myCanvas" width="1200" height="550" style="border:1px solid #d3d3d3; background-color:grey;"> Your browser does not support the HTML canvas, try with other.</canvas>
+
+	<p align="center">
+		<button onclick="decrement();">-</button>
+
+		<input max="25" min="0" type="number" id="num" name="num" placeholder="Number of Balls" value="0" disabled>
+
+		<button onclick="increment(); initial ();">+</button>
+	</p>
+
+
+
+<script>
+
+	var x;
+	var y;
+
+	var clicks = 0;
+
+	var circles = new Array();
+
+	const can = document.getElementById("myCanvas");
+	var ctx = can.getContext("2d");
+	var input = document.getElementById("num");
+
+	
+	function initial () {
+		if (clicks <= 0) {
+
+		} else {
+			setInterval(draw,20);
+		}
+		
+	}
+
+	function random (min, max) { // min and max random
+	  return Math.floor ( Math.random () * ( max - min + 1 ) + min );
+	}
+
+
+	function increment () {
+
+		if ( clicks >= 25 ) {
+			clicks = 25;
+		}else {
+			clicks += 1;	
+		}
+
+		if ( circles.length <= 24 ) {
+
+			x = random(40, 1100);
+			y = random(40, 500);
+		
+			//makes a circle (object) and save it in an array
+			circles.push ( circle ( x, y ) );
+
+		} else {
+				alert ( "para carnal" );
+		} 
+
+		//save the number that is on the input whose the user cant modify
+		input.value = clicks;
+
+		//just a table to know that the object are here, and what they have in
+		//console.table ( circles );
+
+	}
+
+	function decrement () {
+
+		if ( clicks <= 0 ) {
+			clicks = 0;
+		} else {
+			clicks -= 1;
+		}
+		
+		//errase a circle (object)
+		circles.pop ();
+
+		//console.table ( circles );
+
+		input.value = clicks;
+		
+
+	}
+
+	function draw () {
+			
+		ctx.clearRect(0,0, 1200,550);
+			
+		try {
+
+			for (var i = 0; i <= 25; i++) {
+					
+				ctx.beginPath();
+				
+				ctx.fillStyle = circles[i].fill;
+
+				// draw the circle
+				ctx.arc ( circles[i].x, circles[i].y, 20, 0, Math.PI*2, true );
+
+				ctx.closePath ();
+				ctx.fill ();
+
+				if( circles[i].x - 20 < 0 || circles[i].x + 20 > 1200) circles[i].speedx =- circles[i].speedx; 
+				if( circles[i].y - 20 < 0 || circles[i].y + 20 > 550) circles[i].speedy =- circles[i].speedy; 
+
+				circles[i].x += circles[i].speedx; 
+				circles[i].y += circles[i].speedy;
+
+			}
+		} catch(e) {
+			
+		} 
+	}
+
+	//return the circle object
+	function circle (x, y) {
+		fill = "#" + random ( 100, 900 );
+		var speedx = 2;
+		var speedy = 2;
+
+		return {
+			x: x,
+			y: y,
+			fill: fill,
+			speedx: speedx,
+			speedy: speedy
+		};
+	}
+
+	
+	
+</script> 
+
+</body>
+</html>
